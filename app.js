@@ -3,30 +3,36 @@ import { createBoard } from "./board.js";
 import { createPlayer } from "./players.js";
 import { selectByplayer } from "./io.js";
 import { isWon, hasEmptyCell } from "./utills.js";
+
 function main() {
   const gameBoard = createBoard();
   console.log("Welcome!!!");
+
   const playerOneName = input("player 1 name:");
   let playerOneSign = "";
-  while (playerOneSign !== "x" || playerOneSign !== "o") {
-    playerOneSign = input("choose your sign:");
-    if (playerOneSign === "x" || playerOneSign === "o") {
-      break;
+
+  while (playerOneSign !== "x" && playerOneSign !== "o") {
+    playerOneSign = input("choose your sign (x/o):");
+    if (playerOneSign !== "x" && playerOneSign !== "o") {
+      console.log("please choose x or o only");
     }
-    console.log("please choose x or o only");
   }
+
   const playerTwoName = input("player 2 name:");
   let playerTwoSign = "";
+
   while (true) {
-    playerTwoSign = input("choose your sign:");
-    if (playerTwoSign === "x" || playerTwoSign === "o") {
-      if (playerTwoSign === playerOneSign) {
-        console.log(`${playerOneName}, alredy choose ${playerOneSign}`);
-      } else {
-        break;
-      }
-    } else {
+    playerTwoSign = input("choose your sign: (x/o)");
+
+    if (playerTwoSign !== "x" && playerTwoSign !== "o") {
       console.log("please choose x or o only");
+      continue;
+    }
+
+    if (playerTwoSign === playerOneSign) {
+      console.log(`${playerOneName}, alredy choose ${playerOneSign}`);
+    } else {
+      break;
     }
   }
 
@@ -36,7 +42,7 @@ function main() {
   while (
     !isWon(gameBoard, playerOne.sign) &&
     !isWon(gameBoard, playerTwo.sign) &&
-    !hasEmptyCell(gameBoard)
+    hasEmptyCell(gameBoard)
   ) {
     console.log(`${playerOne.name}'s turn`);
     selectByplayer(gameBoard, playerOne);
@@ -46,7 +52,7 @@ function main() {
       break;
     }
 
-    if (hasEmptyCell(gameBoard)) {
+    if (!hasEmptyCell(gameBoard)) {
       console.log("no spaces left, game over");
       break;
     }
@@ -59,7 +65,7 @@ function main() {
       break;
     }
 
-    if (hasEmptyCell(gameBoard)) {
+    if (!hasEmptyCell(gameBoard)) {
       console.log("no spaces left, game over");
       break;
     }
